@@ -1,6 +1,6 @@
-import { Entity } from 'src/app/common/entities/entity.entity'
-import { Optional } from 'src/app/common/logic/optional'
-import { UniqueEntityId } from 'src/app/common/value-objects/unique-entity-id'
+import { Entity } from '@/app/common/entities/entity.entity'
+import { Optional } from '@/app/common/logic/optional'
+import { UniqueEntityId } from '@/app/common/value-objects/unique-entity-id'
 import { PrimaryColor } from '../value-objects/primary-color'
 
 export interface BlogProps {

@@ -1,9 +1,10 @@
-import { UniqueEntityId } from 'src/app/common/value-objects/unique-entity-id'
+import { UniqueEntityId } from '@/app/common/value-objects/unique-entity-id'
 import { PublicationContent } from '../value-objects/publication-content'
-import { Entity } from 'src/app/common/entities/entity.entity'
-import { Optional } from 'src/app/common/logic/optional'
+import { Entity } from '@/app/common/entities/entity.entity'
+import { Optional } from '@/app/common/logic/optional'
 import { Slug } from '../value-objects/slug'
 
+// TODO: colocar o read time (tempo necessário para ler a publicação)
 export interface PublicationProps {
   title: string
   subtitle: string
