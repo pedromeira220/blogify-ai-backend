@@ -2,12 +2,13 @@ import { Entity } from '@/app/common/entities/entity.entity'
 import { Optional } from '@/app/common/logic/optional'
 import { UniqueEntityId } from '@/app/common/value-objects/unique-entity-id'
 import { PrimaryColor } from '../value-objects/primary-color'
+import { Slug } from '@/app/common/value-objects/slug'
 
 export interface BlogProps {
   theme: string
   description: string
   name: string
-  slug: string
+  slug: Slug
   primaryColor: PrimaryColor
   creationDate: Date
 }
@@ -41,7 +42,7 @@ export class Blog extends Entity<BlogProps> {
     return this.props.slug
   }
 
-  set slug(value: string) {
+  set slug(value: Slug) {
     this.props.slug = value
   }
 

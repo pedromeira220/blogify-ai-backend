@@ -1,9 +1,17 @@
 const primaryColor = ['PURPLE', 'ORANGE', 'BLUE', 'GREEN', 'YELLOW'] as const
-type PrimaryColorType = (typeof primaryColor)[number]
+export type PrimaryColorType = (typeof primaryColor)[number]
 
 export class PrimaryColor {
   private _value: PrimaryColorType
-  private generateByAi: boolean
+  private _generateByAi: boolean
+
+  get value() {
+    return this._value
+  }
+
+  get generateByAi() {
+    return this._generateByAi
+  }
 
   constructor(value: PrimaryColorType, generateByAi: boolean) {
     if (!primaryColor.includes(value)) {
@@ -13,6 +21,6 @@ export class PrimaryColor {
     }
 
     this._value = value
-    this.generateByAi = generateByAi
+    this._generateByAi = generateByAi
   }
 }
