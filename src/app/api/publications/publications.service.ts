@@ -1,32 +1,64 @@
 import { Injectable } from '@nestjs/common'
 import { Blog } from '../blogs/entities/blog.entity'
 import { Publication } from './entities/publication.entity'
-import { makePublication } from '@test/factories/make-publication'
 import { PublicationsRepository } from './repositories/publications.repository'
+import { ImagesService } from '../images/images.service'
+import { PostFromAi } from './value-objects/post-from-ai'
+import { PublicationContent } from './value-objects/publication-content'
+import { UniqueEntityId } from '@/app/common/value-objects/unique-entity-id'
 
 @Injectable()
 export class PublicationsService {
+  private NUMBER_OF_PUBLICATIONS_TO_GENERATE = 6
+
   constructor(
     private readonly publicationsRepository: PublicationsRepository,
+    private readonly imagesService: ImagesService,
   ) {}
 
   async generateAndCreatePublicationsForBlog(
     blog: Blog,
   ): Promise<Publication[]> {
-    // TODO: adicionar a lógica com a IA
+    const alreadyGeneratedPublications: Publication[] = []
 
-    const fakePublications = Array.from({
-      length: 6,
-    }).map(() => {
-      return makePublication({
-        blogId: blog.id,
-      })
+    for (let i = 0; i < this.NUMBER_OF_PUBLICATIONS_TO_GENERATE; i++) {
+      const generatedPublication = await this.generateOnePublicationForBlog(
+        blog,
+        alreadyGeneratedPublications,
+      )
+
+      alreadyGeneratedPublications.push(generatedPublication)
+    }
+
+    return alreadyGeneratedPublications
+  }
+
+  async generateOnePublicationForBlog(
+    blog: Blog,
+    alreadyGeneratedPublications: Publication[],
+  ) {
+    const postFromAi = new PostFromAi({
+      content: 'Test content',
+      id: new UniqueEntityId(),
+      subtitle: 'Test subtitle',
+      title: 'Test title',
+      thumbnailSearchTerm: 'Test search term',
+    }) // TODO: usar aqui o chat gpt para gerar o blog
+
+    const searchableImage = await this.imagesService.createImageBySearchTerm(
+      postFromAi.thumbnailSearchTerm,
+    )
+
+    const publication = Publication.create({
+      blogId: blog.id,
+      title: postFromAi.title,
+      content: PublicationContent.create(postFromAi.content),
+      subtitle: postFromAi.content,
+      thumbnailId: searchableImage.id,
     })
 
-    // TODO: adicionar lógica para criar as imagens com base nos termos retornados pela IA
+    await this.publicationsRepository.create(publication)
 
-    await this.publicationsRepository.createMany(fakePublications)
-
-    return fakePublications
+    return publication
   }
 }

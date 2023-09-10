@@ -13,6 +13,7 @@ export interface PublicationProps {
   blogId: UniqueEntityId
   creationDate: Date
   content: PublicationContent
+  thumbnailId: UniqueEntityId
 }
 
 export class Publication extends Entity<PublicationProps> {
@@ -54,6 +55,10 @@ export class Publication extends Entity<PublicationProps> {
 
   set content(value: PublicationContent) {
     this.props.content = value
+  }
+
+  get thumbnailId() {
+    return this.props.thumbnailId
   }
 
   static create(
