@@ -1,18 +1,22 @@
 import { Injectable } from '@nestjs/common'
 import { SearchableImage } from './entities/searchable-image.entity'
 import { SearchableImageRepository } from './repositories/searchable-image.repository'
+import { ImageSearcherAdapter } from '@/app/common/services/image/image-searcher.adpter'
 
 @Injectable()
 export class ImagesService {
   constructor(
     private readonly searchableImageRepository: SearchableImageRepository,
+    private readonly imageSearcherService: ImageSearcherAdapter,
   ) {}
 
   async createImageBySearchTerm(searchTerm: string) {
-    const src = '' // TODO: fazer a busca para o serviço de imagens passando o search term
+    const imageSearcherResponse = await this.imageSearcherService.searchImage({
+      searchTerm,
+    })
 
     const searchableImage = SearchableImage.create({
-      src,
+      src: imageSearcherResponse.src.original,
       searchTerm,
     })
 
