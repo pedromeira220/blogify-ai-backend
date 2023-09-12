@@ -1,8 +1,8 @@
 import { Entity } from '@/app/common/entities/entity.entity'
 import { Optional } from '@/app/common/logic/optional'
+import { Slug } from '@/app/common/value-objects/slug'
 import { UniqueEntityId } from '@/app/common/value-objects/unique-entity-id'
 import { PrimaryColor } from '../value-objects/primary-color'
-import { Slug } from '@/app/common/value-objects/slug'
 
 export interface BlogProps {
   theme: string

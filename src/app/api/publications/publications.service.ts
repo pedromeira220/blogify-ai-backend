@@ -1,11 +1,10 @@
+import { AiPostGeneratorAdapter } from '@/app/common/services/ai/ai-post-generator.adapter'
 import { Injectable } from '@nestjs/common'
 import { Blog } from '../blogs/entities/blog.entity'
+import { ImagesService } from '../images/images.service'
 import { Publication } from './entities/publication.entity'
 import { PublicationsRepository } from './repositories/publications.repository'
-import { ImagesService } from '../images/images.service'
-import { PostFromAi } from './value-objects/post-from-ai'
 import { PublicationContent } from './value-objects/publication-content'
-import { UniqueEntityId } from '@/app/common/value-objects/unique-entity-id'
 
 @Injectable()
 export class PublicationsService {
@@ -14,6 +13,7 @@ export class PublicationsService {
   constructor(
     private readonly publicationsRepository: PublicationsRepository,
     private readonly imagesService: ImagesService,
+    private readonly aiPostGenerator: AiPostGeneratorAdapter,
   ) {}
 
   async generateAndCreatePublicationsForBlog(
@@ -21,6 +21,7 @@ export class PublicationsService {
   ): Promise<Publication[]> {
     const alreadyGeneratedPublications: Publication[] = []
 
+    // TODO: verificar se isso aqui funciona (não tenho certeza se o await funciona dentro de um for)
     for (let i = 0; i < this.NUMBER_OF_PUBLICATIONS_TO_GENERATE; i++) {
       const generatedPublication = await this.generateOnePublicationForBlog(
         blog,
@@ -37,13 +38,10 @@ export class PublicationsService {
     blog: Blog,
     alreadyGeneratedPublications: Publication[],
   ) {
-    const postFromAi = new PostFromAi({
-      content: 'Test content',
-      id: new UniqueEntityId(),
-      subtitle: 'Test subtitle',
-      title: 'Test title',
-      thumbnailSearchTerm: 'Test search term',
-    }) // TODO: usar aqui o chat gpt para gerar o blog
+    const postFromAi = await this.aiPostGenerator.generate(
+      blog,
+      alreadyGeneratedPublications,
+    )
 
     const searchableImage = await this.imagesService.createImageBySearchTerm(
       postFromAi.thumbnailSearchTerm,

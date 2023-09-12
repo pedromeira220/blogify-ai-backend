@@ -1,5 +1,11 @@
-const primaryColor = ['PURPLE', 'ORANGE', 'BLUE', 'GREEN', 'YELLOW'] as const
-export type PrimaryColorType = (typeof primaryColor)[number]
+export const primaryColorArray = [
+  'PURPLE',
+  'ORANGE',
+  'BLUE',
+  'GREEN',
+  'YELLOW',
+] as const
+export type PrimaryColorType = (typeof primaryColorArray)[number]
 
 export class PrimaryColor {
   private _value: PrimaryColorType
@@ -14,9 +20,9 @@ export class PrimaryColor {
   }
 
   constructor(value: PrimaryColorType, generateByAi: boolean) {
-    if (!primaryColor.includes(value)) {
+    if (!primaryColorArray.includes(value)) {
       throw new Error(
-        `Primary color precisa ser uma dessas opções: ${primaryColor}`,
+        `Primary color precisa ser uma dessas opções: ${primaryColorArray}`,
       ) // TODO: colocar depois um erro usando as exceptions do Nest
     }
 

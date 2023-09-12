@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
-import { BlogsService } from './blogs.service'
-import { BlogsController } from './blogs.controller'
 import { PublicationsService } from '../publications/publications.service'
+import { BlogsController } from './blogs.controller'
+import { BlogsService } from './blogs.service'
 
 @Module({
   controllers: [BlogsController],
