@@ -56,4 +56,8 @@ export class BlogsService {
 
     await this.publicationService.generateAndCreatePublicationsForBlog(blog)
   }
+
+  async getAll() {
+    return this.blogsRepository.getAll()
+  }
 }

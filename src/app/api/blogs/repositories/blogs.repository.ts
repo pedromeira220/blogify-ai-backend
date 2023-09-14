@@ -1,5 +1,6 @@
-import { Blog } from '../entities/blog.entity'
+import { Blog } from '../entities/blog.entity';
 
 export abstract class BlogsRepository {
   abstract create(blog: Blog): Promise<void>
+  abstract getAll(): Promise<Blog[]>
 }

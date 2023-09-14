@@ -8,7 +8,9 @@ import { AiPostGeneratorAdapter } from '../ai-post-generator.adapter'
 import { AiPrompterAdapter } from '../ai-prompter.adapter'
 
 @Injectable()
-export class VercelAiSdkPostGeneratorService implements AiPostGeneratorAdapter {
+export class VercelAiSdkAiPostGeneratorService
+  implements AiPostGeneratorAdapter
+{
   constructor(private readonly aiPrompter: AiPrompterAdapter) {}
 
   async generate(
@@ -52,8 +54,12 @@ export class VercelAiSdkPostGeneratorService implements AiPostGeneratorAdapter {
       prompt,
     })
 
+    console.log('> completion', completion)
+
     // TODO: adicionar a validação que o json realmente possui os campos
     const completionAsJson = JSON.parse(completion) as AiPostGeneratorResponse
+
+    console.log('> completionAsJson', completionAsJson)
 
     return new PostFromAi({
       content: completionAsJson.content,

@@ -11,4 +11,8 @@ export class InMemorySearchableImageRepository
   async create(searchableImage: SearchableImage): Promise<void> {
     this.items.push(searchableImage)
   }
+
+  async getAll(): Promise<SearchableImage[]> {
+    return this.items
+  }
 }

@@ -8,7 +8,7 @@ import { PublicationContent } from './value-objects/publication-content'
 
 @Injectable()
 export class PublicationsService {
-  private NUMBER_OF_PUBLICATIONS_TO_GENERATE = 6
+  private NUMBER_OF_PUBLICATIONS_TO_GENERATE = 1 // TODO: mudar este número para 6
 
   constructor(
     private readonly publicationsRepository: PublicationsRepository,
@@ -31,6 +31,13 @@ export class PublicationsService {
       alreadyGeneratedPublications.push(generatedPublication)
     }
 
+    /* const generatedPublication = await this.generateOnePublicationForBlog(
+      blog,
+      alreadyGeneratedPublications,
+    )
+
+    alreadyGeneratedPublications.push(generatedPublication) */
+
     return alreadyGeneratedPublications
   }
 
@@ -51,12 +58,16 @@ export class PublicationsService {
       blogId: blog.id,
       title: postFromAi.title,
       content: PublicationContent.create(postFromAi.content),
-      subtitle: postFromAi.content,
+      subtitle: postFromAi.subtitle,
       thumbnailId: searchableImage.id,
     })
 
     await this.publicationsRepository.create(publication)
 
     return publication
+  }
+
+  async getAll() {
+    return this.publicationsRepository.getAll()
   }
 }

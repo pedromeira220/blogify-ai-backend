@@ -1,7 +1,7 @@
+import { ImageSearcherAdapter } from '@/app/common/services/image/image-searcher.adpter'
 import { Injectable } from '@nestjs/common'
 import { SearchableImage } from './entities/searchable-image.entity'
 import { SearchableImageRepository } from './repositories/searchable-image.repository'
-import { ImageSearcherAdapter } from '@/app/common/services/image/image-searcher.adpter'
 
 @Injectable()
 export class ImagesService {
@@ -23,5 +23,9 @@ export class ImagesService {
     await this.searchableImageRepository.create(searchableImage)
 
     return searchableImage
+  }
+
+  async getAll() {
+    return this.searchableImageRepository.getAll()
   }
 }
