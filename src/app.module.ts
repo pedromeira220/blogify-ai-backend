@@ -12,6 +12,7 @@ import { EnvModule } from './app/core/env/env.module'
     ConfigModule.forRoot({
       validate: (env) => envSchema.parse(env),
       isGlobal: true,
+      expandVariables: true,
     }),
     BlogsModule,
     ImagesModule,
