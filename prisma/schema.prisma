@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -11,21 +12,49 @@ datasource db {
 }
 
 model Blog {
-  id String @id
-  theme String
-  description String
-  name String
-  slug String
-  primaryColor PrimaryColor
-  creationDate DateTime
+  id            String       @id
+  theme         String
+  description   String
+  name          String
+  slug          String
+  primary_color PrimaryColor
+  creation_date DateTime
+
+  Publication Publication[]
 
   @@map("blogs")
 }
 
+model Image {
+  id                           String        @id
+  src                          String
+  local_image_file_name        String?
+  searchable_image_search_term String?
+  Publication                  Publication[]
+
+  @@map("images")
+}
+
+model Publication {
+  id            String   @id
+  title         String
+  subtitle      String
+  slug          String
+  creation_date DateTime
+  content       String
+  blog_id       String
+  thumbnail_id  String
+
+  thumbnail Image @relation(fields: [thumbnail_id], references: [id])
+  blog      Blog  @relation(fields: [blog_id], references: [id])
+
+  @@map("publications")
+}
+
 enum PrimaryColor {
-    PURPLE
-    ORANGE
-    BLUE
-    GREEN
-    YELLOW
+  PURPLE
+  ORANGE
+  BLUE
+  GREEN
+  YELLOW
 }

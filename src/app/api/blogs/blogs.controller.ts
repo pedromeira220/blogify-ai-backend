@@ -8,12 +8,12 @@ export class BlogsController {
   @Post()
   async createBlog() {
     await this.blogsService.create({
-      theme: 'Mundo apple',
+      theme: 'Programação TypeScript para iniciantes',
       description:
-        'um blog sobre o mundo apple, ou seja, novos lançamentos, reviews sobre produtos, noticiais, entre outros.',
-      name: 'macmagazine',
-      slug: 'macmagazine',
-      primaryColor: 'BLUE',
+        'Um blog que contem conteúdos para iniciantes em programação, nele vai ter tutorais, explicação de conceitos básicos sobre a linguagem entre outros.',
+      name: 'Typescript Learn',
+      slug: 'typescript-learn',
+      primaryColor: 'ASK_AI',
     })
   }
 

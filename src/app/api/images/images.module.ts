@@ -4,7 +4,7 @@ import { HttpModule } from '@nestjs/axios'
 import { Module } from '@nestjs/common'
 import { ImagesController } from './images.controller'
 import { ImagesService } from './images.service'
-import { InMemorySearchableImageRepository } from './repositories/implementations/in-memory-searchable-image.respository'
+import { PrismaSearchableImageRepository } from './repositories/implementations/prisma-searchable-image.repository'
 import { SearchableImageRepository } from './repositories/searchable-image.repository'
 
 @Module({
@@ -14,7 +14,7 @@ import { SearchableImageRepository } from './repositories/searchable-image.repos
     ImagesService,
     {
       provide: SearchableImageRepository,
-      useClass: InMemorySearchableImageRepository,
+      useClass: PrismaSearchableImageRepository,
     },
     {
       provide: ImageSearcherAdapter,

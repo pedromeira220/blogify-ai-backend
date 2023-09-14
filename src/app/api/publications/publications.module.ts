@@ -5,7 +5,7 @@ import { ImagesModule } from '../images/images.module'
 import { ImagesService } from '../images/images.service'
 import { PublicationsController } from './publications.controller'
 import { PublicationsService } from './publications.service'
-import { InMemoryPublicationsRepository } from './repositories/implementations/in-memory-publications.repository'
+import { PrismaPublicationRepository } from './repositories/implementations/prisma-publications.repository'
 import { PublicationsRepository } from './repositories/publications.repository'
 
 @Module({
@@ -15,7 +15,7 @@ import { PublicationsRepository } from './repositories/publications.repository'
     PublicationsService,
     {
       provide: PublicationsRepository,
-      useClass: InMemoryPublicationsRepository,
+      useClass: PrismaPublicationRepository,
     },
     ImagesService,
     {

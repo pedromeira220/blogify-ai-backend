@@ -6,7 +6,7 @@ export class Entity<Props> {
 
   protected constructor(props: Props, id?: UniqueEntityId) {
     this.props = props
-    this._id = id
+    this._id = id ?? new UniqueEntityId()
   }
 
   get id() {

@@ -6,7 +6,7 @@ import { PublicationsService } from '../publications/publications.service'
 import { BlogsController } from './blogs.controller'
 import { BlogsService } from './blogs.service'
 import { BlogsRepository } from './repositories/blogs.repository'
-import { InMemoryBlogsRepository } from './repositories/implementations/in-memory-blogs.repository'
+import { PrismaBlogsRepository } from './repositories/implementations/prisma-blogs.repository'
 
 @Module({
   imports: [PublicationsModule],
@@ -16,7 +16,7 @@ import { InMemoryBlogsRepository } from './repositories/implementations/in-memor
     PublicationsService,
     {
       provide: BlogsRepository,
-      useClass: InMemoryBlogsRepository,
+      useClass: PrismaBlogsRepository,
     },
     {
       provide: AiBlogPrimaryColorGeneratorAdapter,
