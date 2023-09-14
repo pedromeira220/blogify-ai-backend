@@ -6,7 +6,7 @@ import { Blog } from './entities/blog.entity'
 import { BlogsRepository } from './repositories/blogs.repository'
 import { PrimaryColor, PrimaryColorType } from './value-objects/primary-color'
 
-type PrimaryColorOptions = PrimaryColorType | 'ASK_AI'
+export type PrimaryColorOptions = PrimaryColorType | 'ASK_AI'
 interface CreateRequest {
   theme: string
   description: string

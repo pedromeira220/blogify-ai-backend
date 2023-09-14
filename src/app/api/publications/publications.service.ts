@@ -8,7 +8,7 @@ import { PublicationContent } from './value-objects/publication-content'
 
 @Injectable()
 export class PublicationsService {
-  private NUMBER_OF_PUBLICATIONS_TO_GENERATE = 1 // TODO: mudar este número para 6
+  private NUMBER_OF_PUBLICATIONS_TO_GENERATE = 6 // TODO: mudar este número para 6
 
   constructor(
     private readonly publicationsRepository: PublicationsRepository,

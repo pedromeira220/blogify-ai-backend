@@ -17,6 +17,8 @@ export class VercelAiSdkAiBlogPrimaryColorGeneratorService
   constructor(private readonly aiPrompter: AiPrompterAdapter) {}
 
   async generate(params: GenerateParams): Promise<PrimaryColor> {
+    // TODO: ver se é possível usar um prompt melhor
+
     const prompt = `Você vai agir como um especialista em design de websites. Você precisa escolher a cor primária de um blog, ela só pode ser uma dessas opções:
     Opções: ${primaryColorArray.toString()}
     Considerando as informações que passar a seguir, quero que me retorne APENAS a cor primária que mais se encaixa nos requisitos, nenhum texto a mais:
@@ -27,7 +29,10 @@ export class VercelAiSdkAiBlogPrimaryColorGeneratorService
 
     const { completion } = await this.aiPrompter.prompt({
       prompt,
+      temperature: 0.8,
     })
+
+    console.log('> completion do generate primary color', completion)
 
     // TODO: aqui pode-se encaixar uma sanitização do texto, para pegar apenas a cor que ele retornou sem considerar qualquer texto adicional
 
