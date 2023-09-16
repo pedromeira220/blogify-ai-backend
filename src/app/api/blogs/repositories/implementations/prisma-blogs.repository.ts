@@ -1,3 +1,4 @@
+import { Slug } from '@/app/common/value-objects/slug'
 import { PrismaService } from '@/app/database/prisma/prisma.service'
 import { Injectable } from '@nestjs/common'
 import { Blog } from '../../entities/blog.entity'
@@ -16,5 +17,19 @@ export class PrismaBlogsRepository implements BlogsRepository {
 
   getAll(): Promise<Blog[]> {
     throw new Error('Method not implemented.')
+  }
+
+  async findOneBySlug(slug: Slug): Promise<Blog | null> {
+    const blog = await this.prisma.blog.findFirst({
+      where: {
+        slug: slug.value,
+      },
+    })
+
+    if (!blog) {
+      return null
+    }
+
+    return BlogMapper.fromPrismaToDomain(blog)
   }
 }

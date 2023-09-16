@@ -33,7 +33,7 @@ export class VercelAiSdkAiPrompterService implements AiPrompterAdapter {
     const completion = response.choices[0].message.content
 
     return {
-      completion,
+      completion: completion ?? '',
     }
   }
 }

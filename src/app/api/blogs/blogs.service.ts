@@ -1,5 +1,5 @@
 import { AiBlogPrimaryColorGeneratorAdapter } from '@/app/common/services/ai/ai-blog-primary-color-generator.adapter'
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { Slug } from '../../common/value-objects/slug'
 import { PublicationsService } from '../publications/publications.service'
 import { Blog } from './entities/blog.entity'
@@ -13,6 +13,10 @@ interface CreateRequest {
   name: string
   slug: string
   primaryColor: PrimaryColorOptions
+}
+
+interface GetBySlugRequest {
+  slug: string
 }
 
 @Injectable()
@@ -54,10 +58,18 @@ export class BlogsService {
 
     await this.blogsRepository.create(blog)
 
-    await this.publicationService.generateAndCreatePublicationsForBlog(blog)
+    this.publicationService.generateAndCreatePublicationsForBlog(blog)
   }
 
-  async getAll() {
-    return this.blogsRepository.getAll()
+  async getBySlug({ slug }: GetBySlugRequest) {
+    const blogFound = await this.blogsRepository.findOneBySlug(
+      Slug.create(slug),
+    )
+
+    if (!blogFound) {
+      throw new NotFoundException('Blog not found')
+    }
+
+    return blogFound
   }
 }

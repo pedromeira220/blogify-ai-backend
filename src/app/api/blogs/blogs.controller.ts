@@ -1,6 +1,9 @@
-import { Body, Controller, Post } from '@nestjs/common'
+import { ResponseDTO } from '@/app/common/dtos/respose.dto'
+import { Body, Controller, Get, Param, Post } from '@nestjs/common'
 import { BlogsService } from './blogs.service'
+import { BlogDTO } from './dtos/blog.dto'
 import { CreateBlogDTO } from './dtos/create-blog.dto'
+import { BlogMapper } from './mappers/blog.mapper'
 
 @Controller('blogs')
 export class BlogsController {
@@ -15,5 +18,12 @@ export class BlogsController {
       primaryColor: createBlogDTO.primaryColor,
       name: createBlogDTO.name,
     })
+  }
+
+  @Get('/:slug')
+  async getBySlug(@Param('slug') slug: string): Promise<ResponseDTO<BlogDTO>> {
+    const blog = await this.blogsService.getBySlug({ slug })
+
+    return BlogMapper.fromDomainToHttp(blog)
   }
 }
