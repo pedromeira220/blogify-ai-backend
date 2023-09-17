@@ -23,6 +23,10 @@ interface GetAllFromBlogAndPublicationSlugRequest {
   pageable: Pageable
 }
 
+interface IsPublicationsFromBlogReadyRequest {
+  blogSlug: Slug
+}
+
 @Injectable()
 export class PublicationsService {
   private NUMBER_OF_PUBLICATIONS_TO_GENERATE = 6
@@ -140,5 +144,14 @@ export class PublicationsService {
       publication: publicationFound,
       publicationThumbnail,
     }
+  }
+
+  async isPublicationsFromBlogReady({
+    blogSlug,
+  }: IsPublicationsFromBlogReadyRequest) {
+    const publicationsFromBlogCount =
+      await this.publicationsRepository.countByBlogSlug(blogSlug)
+
+    return publicationsFromBlogCount === this.NUMBER_OF_PUBLICATIONS_TO_GENERATE
   }
 }

@@ -77,4 +77,16 @@ export class PrismaPublicationRepository implements PublicationsRepository {
 
     return PublicationMapper.fromPrismaToDomain(publication)
   }
+
+  async countByBlogSlug(blogSlug: Slug): Promise<number> {
+    const count = await this.prisma.publication.count({
+      where: {
+        blog: {
+          slug: blogSlug.value,
+        },
+      },
+    })
+
+    return count
+  }
 }

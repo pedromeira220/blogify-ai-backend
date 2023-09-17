@@ -17,4 +17,6 @@ export abstract class PublicationsRepository {
     publicationSlug: Slug,
     pageable: Pageable,
   ): Promise<Publication | null>
+
+  abstract countByBlogSlug(blogSlug: Slug): Promise<number>
 }

@@ -29,7 +29,7 @@ export class PublicationsController {
     )
   }
 
-  @Get('/blogs/:blogSlug/:publicationSlug')
+  @Get('/:blogSlug/:publicationSlug')
   async getAllFromBlogAndPublicationSlug(
     @Param('blogSlug') blogSlug: string,
     @Param('publicationSlug') publicationSlug: string,
@@ -45,5 +45,14 @@ export class PublicationsController {
       })
 
     return PublicationMapper.fromDomainToHttp(publication, publicationThumbnail)
+  }
+
+  @Get('/blogs/:blogSlug/ready')
+  async isPublicationsFromBlogReady(@Param('blogSlug') blogSlug: string) {
+    const isReady = await this.publicationsService.isPublicationsFromBlogReady({
+      blogSlug: Slug.create(blogSlug),
+    })
+
+    return new ResponseDTO({ data: isReady })
   }
 }

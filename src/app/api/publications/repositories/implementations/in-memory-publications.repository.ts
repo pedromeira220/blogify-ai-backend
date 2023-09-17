@@ -35,4 +35,8 @@ export class InMemoryPublicationsRepository implements PublicationsRepository {
   ): Promise<Publication | null> {
     throw new Error('Method not implemented.')
   }
+
+  async countByBlogSlug(blogSlug: Slug): Promise<number> {
+    throw new Error('Method not implemented.')
+  }
 }
