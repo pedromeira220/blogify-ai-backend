@@ -27,4 +27,12 @@ export class InMemoryPublicationsRepository implements PublicationsRepository {
   ): Promise<Page<Publication>> {
     throw new Error('Method not implemented.')
   }
+
+  async findByBlogAndPublicationSlug(
+    blogSlug: Slug,
+    publicationSlug: Slug,
+    pageable: Pageable,
+  ): Promise<Publication | null> {
+    throw new Error('Method not implemented.')
+  }
 }

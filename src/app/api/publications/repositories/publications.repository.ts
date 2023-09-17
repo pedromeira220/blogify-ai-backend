@@ -11,4 +11,10 @@ export abstract class PublicationsRepository {
     slug: Slug,
     pageable: Pageable,
   ): Promise<Page<Publication>>
+
+  abstract findByBlogAndPublicationSlug(
+    blogSlug: Slug,
+    publicationSlug: Slug,
+    pageable: Pageable,
+  ): Promise<Publication | null>
 }

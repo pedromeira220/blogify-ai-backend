@@ -56,4 +56,25 @@ export class PrismaPublicationRepository implements PublicationsRepository {
       totalElements,
     })
   }
+
+  async findByBlogAndPublicationSlug(
+    blogSlug: Slug,
+    publicationSlug: Slug,
+    pageable: Pageable,
+  ): Promise<Publication | null> {
+    const publication = await this.prisma.publication.findFirst({
+      where: {
+        slug: publicationSlug.value,
+        blog: {
+          slug: blogSlug.value,
+        },
+      },
+    })
+
+    if (!publication) {
+      return null
+    }
+
+    return PublicationMapper.fromPrismaToDomain(publication)
+  }
 }

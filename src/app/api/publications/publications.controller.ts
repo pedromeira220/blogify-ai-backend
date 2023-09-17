@@ -1,8 +1,10 @@
+import { ResponseDTO } from '@/app/common/dtos/response.dto'
 import { PageMapper } from '@/app/common/mappers/page.mapper'
 import { Pageable } from '@/app/common/value-objects/pageable'
 import { Slug } from '@/app/common/value-objects/slug'
 import { Controller, Get, Param } from '@nestjs/common'
 import { PublicationMinimalDTO } from './dtos/publication-minimal.dto'
+import { PublicationDTO } from './dtos/publication.dto'
 import { PublicationMapper } from './mappers/publication.mapper'
 import { PublicationsService } from './publications.service'
 
@@ -20,8 +22,6 @@ export class PublicationsController {
       }),
     })
 
-    console.log('> publicationFromBlog', publicationFromBlog)
-
     const publicationsAsDTO = publicationFromBlog.content.map(
       PublicationMapper.fromDomainToMinimalDTO,
     )
@@ -30,5 +30,23 @@ export class PublicationsController {
       publicationFromBlog,
       publicationsAsDTO,
     )
+  }
+
+  @Get('/blogs/:blogSlug/:publicationSlug')
+  async getAllFromBlogAndPublicationSlug(
+    @Param('blogSlug') blogSlug: string,
+    @Param('publicationSlug') publicationSlug: string,
+  ): Promise<ResponseDTO<PublicationDTO>> {
+    const publication =
+      await this.publicationsService.getFromBlogAndPublicationSlug({
+        blogSlug: Slug.create(blogSlug),
+        publicationSlug: Slug.create(publicationSlug),
+        pageable: new Pageable({
+          pageNumber: 0,
+          pageSize: 20,
+        }),
+      })
+
+    return PublicationMapper.fromDomainToHttp(publication)
   }
 }

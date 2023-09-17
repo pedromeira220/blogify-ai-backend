@@ -16,7 +16,7 @@ model Blog {
   theme         String
   description   String
   name          String
-  slug          String
+  slug          String       @unique
   primary_color PrimaryColor
   creation_date DateTime
 
