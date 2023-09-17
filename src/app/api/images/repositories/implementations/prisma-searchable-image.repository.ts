@@ -1,3 +1,4 @@
+import { UniqueEntityId } from '@/app/common/value-objects/unique-entity-id'
 import { PrismaService } from '@/app/database/prisma/prisma.service'
 import { Injectable } from '@nestjs/common'
 import { SearchableImage } from '../../entities/searchable-image.entity'
@@ -18,5 +19,31 @@ export class PrismaSearchableImageRepository
 
   async getAll(): Promise<SearchableImage[]> {
     throw new Error('Method not implemented.')
+  }
+
+  async findById(id: UniqueEntityId): Promise<SearchableImage | null> {
+    const image = await this.prisma.image.findFirst({
+      where: {
+        id: id.toString(),
+      },
+    })
+
+    if (!image) {
+      return null
+    }
+
+    return SearchableImageMapper.fromPrismaToDomain(image)
+  }
+
+  async findManyByIdList(idList: UniqueEntityId[]): Promise<SearchableImage[]> {
+    const images = await this.prisma.image.findMany({
+      where: {
+        id: {
+          in: idList.map((uniqueEntityId) => uniqueEntityId.toString()),
+        },
+      },
+    })
+
+    return images.map(SearchableImageMapper.fromPrismaToDomain)
   }
 }

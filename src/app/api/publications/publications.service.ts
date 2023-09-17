@@ -4,8 +4,11 @@ import { Pageable } from '@/app/common/value-objects/pageable'
 import { Slug } from '@/app/common/value-objects/slug'
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { Blog } from '../blogs/entities/blog.entity'
+import { SearchableImage } from '../images/entities/searchable-image.entity'
 import { ImagesService } from '../images/images.service'
+import { SearchableImageRepository } from '../images/repositories/searchable-image.repository'
 import { Publication } from './entities/publication.entity'
+import { PublicationMapper } from './mappers/publication.mapper'
 import { PublicationsRepository } from './repositories/publications.repository'
 import { PublicationContent } from './value-objects/publication-content'
 
@@ -28,6 +31,7 @@ export class PublicationsService {
     private readonly publicationsRepository: PublicationsRepository,
     private readonly imagesService: ImagesService,
     private readonly aiPostGenerator: AiPostGeneratorAdapter,
+    private readonly searchableImageRepository: SearchableImageRepository,
   ) {}
 
   async generateAndCreatePublicationsForBlog(
@@ -81,11 +85,31 @@ export class PublicationsService {
     return publication
   }
 
-  async getAllFromBlog({
-    slug,
-    pageable,
-  }: GetAllFromBlogRequest): Promise<Page<Publication>> {
-    return await this.publicationsRepository.fetchAllBySlug(slug, pageable)
+  async getAllFromBlog({ slug, pageable }: GetAllFromBlogRequest) {
+    const publications = await this.publicationsRepository.fetchAllBySlug(
+      slug,
+      pageable,
+    )
+
+    const images = await this.searchableImageRepository.findManyByIdList(
+      publications.content.map((publication) => publication.thumbnailId),
+    )
+
+    const publicationDTOs = publications.content.map((publication) => {
+      return PublicationMapper.fromDomainToDTO(
+        publication,
+        images.find((image) =>
+          publication.thumbnailId.equals(image.id),
+        ) as SearchableImage,
+      )
+    })
+
+    return Page.create({
+      content: publicationDTOs,
+      pageNumber: publications.pageNumber,
+      pageSize: publications.pageSize,
+      totalElements: publications.totalElements,
+    })
   }
 
   async getFromBlogAndPublicationSlug({
@@ -104,6 +128,17 @@ export class PublicationsService {
       throw new NotFoundException('Publication not found')
     }
 
-    return publicationFound
+    const publicationThumbnail = await this.searchableImageRepository.findById(
+      publicationFound.thumbnailId,
+    )
+
+    if (!publicationThumbnail) {
+      throw new NotFoundException('Publication thumbnail not found')
+    }
+
+    return {
+      publication: publicationFound,
+      publicationThumbnail,
+    }
   }
 }

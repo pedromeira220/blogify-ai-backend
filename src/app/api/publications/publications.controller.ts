@@ -3,7 +3,6 @@ import { PageMapper } from '@/app/common/mappers/page.mapper'
 import { Pageable } from '@/app/common/value-objects/pageable'
 import { Slug } from '@/app/common/value-objects/slug'
 import { Controller, Get, Param } from '@nestjs/common'
-import { PublicationMinimalDTO } from './dtos/publication-minimal.dto'
 import { PublicationDTO } from './dtos/publication.dto'
 import { PublicationMapper } from './mappers/publication.mapper'
 import { PublicationsService } from './publications.service'
@@ -22,13 +21,11 @@ export class PublicationsController {
       }),
     })
 
-    const publicationsAsDTO = publicationFromBlog.content.map(
-      PublicationMapper.fromDomainToMinimalDTO,
-    )
+    console.log('> publicationFromBlog', publicationFromBlog)
 
-    return PageMapper.toHttp<PublicationMinimalDTO>(
+    return PageMapper.toHttp<PublicationDTO>(
       publicationFromBlog,
-      publicationsAsDTO,
+      publicationFromBlog.content,
     )
   }
 
@@ -37,7 +34,7 @@ export class PublicationsController {
     @Param('blogSlug') blogSlug: string,
     @Param('publicationSlug') publicationSlug: string,
   ): Promise<ResponseDTO<PublicationDTO>> {
-    const publication =
+    const { publication, publicationThumbnail } =
       await this.publicationsService.getFromBlogAndPublicationSlug({
         blogSlug: Slug.create(blogSlug),
         publicationSlug: Slug.create(publicationSlug),
@@ -47,6 +44,6 @@ export class PublicationsController {
         }),
       })
 
-    return PublicationMapper.fromDomainToHttp(publication)
+    return PublicationMapper.fromDomainToHttp(publication, publicationThumbnail)
   }
 }

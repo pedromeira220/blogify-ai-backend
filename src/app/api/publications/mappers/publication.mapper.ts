@@ -2,6 +2,8 @@ import { ResponseDTO } from '@/app/common/dtos/response.dto'
 import { Slug } from '@/app/common/value-objects/slug'
 import { UniqueEntityId } from '@/app/common/value-objects/unique-entity-id'
 import { Publication as PrismaPublication } from '@prisma/client'
+import { SearchableImage } from '../../images/entities/searchable-image.entity'
+import { SearchableImageMapper } from '../../images/mappers/searchable-image.mapper'
 import { PublicationMinimalDTO } from '../dtos/publication-minimal.dto'
 import { PublicationDTO } from '../dtos/publication.dto'
 import { Publication } from '../entities/publication.entity'
@@ -50,14 +52,17 @@ export class PublicationMapper {
     })
   }
 
-  static fromDomainToDTO(publication: Publication): PublicationDTO {
+  static fromDomainToDTO(
+    publication: Publication,
+    image: SearchableImage,
+  ): PublicationDTO {
     return new PublicationDTO({
       blogId: publication.blogId.toString(),
       creationDate: publication.creationDate,
       id: publication.id.toString(),
       slug: publication.slug.value,
       subtitle: publication.subtitle,
-      thumbnailId: publication.thumbnailId.toString(),
+      thumbnail: SearchableImageMapper.fromDomainToDTO(image),
       title: publication.title,
       content: publication.content.value,
     })
@@ -65,9 +70,10 @@ export class PublicationMapper {
 
   static fromDomainToHttp(
     publication: Publication,
+    image: SearchableImage,
   ): ResponseDTO<PublicationDTO> {
     return new ResponseDTO({
-      data: this.fromDomainToDTO(publication),
+      data: this.fromDomainToDTO(publication, image),
     })
   }
 }

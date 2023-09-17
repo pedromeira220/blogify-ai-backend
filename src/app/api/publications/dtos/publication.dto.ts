@@ -1,3 +1,5 @@
+import { ImageDTO } from '../../images/dto/image.dto'
+
 export interface PublicationDTOProps {
   id: string
   title: string
@@ -6,7 +8,7 @@ export interface PublicationDTOProps {
   blogId: string
   creationDate: Date
   content: string
-  thumbnailId: string
+  thumbnail: ImageDTO
 }
 
 export class PublicationDTO implements PublicationDTOProps {
@@ -17,7 +19,7 @@ export class PublicationDTO implements PublicationDTOProps {
   blogId: string
   creationDate: Date
   content: string
-  thumbnailId: string
+  thumbnail: ImageDTO
 
   constructor({
     id,
@@ -27,7 +29,7 @@ export class PublicationDTO implements PublicationDTOProps {
     blogId,
     creationDate,
     content,
-    thumbnailId,
+    thumbnail,
   }: PublicationDTOProps) {
     this.id = id
     this.title = title
@@ -36,6 +38,6 @@ export class PublicationDTO implements PublicationDTOProps {
     this.blogId = blogId
     this.creationDate = creationDate
     this.content = content
-    this.thumbnailId = thumbnailId
+    this.thumbnail = thumbnail
   }
 }
