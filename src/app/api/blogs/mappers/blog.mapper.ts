@@ -1,4 +1,4 @@
-import { ResponseDTO } from '@/app/common/dtos/respose.dto'
+import { ResponseDTO } from '@/app/common/dtos/response.dto'
 import { Slug } from '@/app/common/value-objects/slug'
 import { UniqueEntityId } from '@/app/common/value-objects/unique-entity-id'
 import { Blog as PrismaBlog } from '@prisma/client'

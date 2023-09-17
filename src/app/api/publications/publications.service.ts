@@ -1,4 +1,7 @@
 import { AiPostGeneratorAdapter } from '@/app/common/services/ai/ai-post-generator.adapter'
+import { Page } from '@/app/common/value-objects/page'
+import { Pageable } from '@/app/common/value-objects/pageable'
+import { Slug } from '@/app/common/value-objects/slug'
 import { Injectable } from '@nestjs/common'
 import { Blog } from '../blogs/entities/blog.entity'
 import { ImagesService } from '../images/images.service'
@@ -6,9 +9,14 @@ import { Publication } from './entities/publication.entity'
 import { PublicationsRepository } from './repositories/publications.repository'
 import { PublicationContent } from './value-objects/publication-content'
 
+interface GetAllFromBlogRequest {
+  slug: Slug
+  pageable: Pageable
+}
+
 @Injectable()
 export class PublicationsService {
-  private NUMBER_OF_PUBLICATIONS_TO_GENERATE = 6 // TODO: mudar este número para 6
+  private NUMBER_OF_PUBLICATIONS_TO_GENERATE = 6
 
   constructor(
     private readonly publicationsRepository: PublicationsRepository,
@@ -67,7 +75,10 @@ export class PublicationsService {
     return publication
   }
 
-  async getAll() {
-    return this.publicationsRepository.getAll()
+  async getAllFromBlog({
+    slug,
+    pageable,
+  }: GetAllFromBlogRequest): Promise<Page<Publication>> {
+    return await this.publicationsRepository.fetchAllBySlug(slug, pageable)
   }
 }

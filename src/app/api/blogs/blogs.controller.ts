@@ -1,4 +1,4 @@
-import { ResponseDTO } from '@/app/common/dtos/respose.dto'
+import { ResponseDTO } from '@/app/common/dtos/response.dto'
 import { Body, Controller, Get, Param, Post } from '@nestjs/common'
 import { BlogsService } from './blogs.service'
 import { BlogDTO } from './dtos/blog.dto'

@@ -1,3 +1,6 @@
+import { Page } from '@/app/common/value-objects/page'
+import { Pageable } from '@/app/common/value-objects/pageable'
+import { Slug } from '@/app/common/value-objects/slug'
 import { Injectable } from '@nestjs/common'
 import { Publication } from '../../entities/publication.entity'
 import { PublicationsRepository } from '../publications.repository'
@@ -16,5 +19,12 @@ export class InMemoryPublicationsRepository implements PublicationsRepository {
 
   async getAll(): Promise<Publication[]> {
     return this.items
+  }
+
+  async fetchAllBySlug(
+    slug: Slug,
+    pageable: Pageable,
+  ): Promise<Page<Publication>> {
+    throw new Error('Method not implemented.')
   }
 }
