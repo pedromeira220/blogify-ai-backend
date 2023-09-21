@@ -1,3 +1,5 @@
+import { BadRequestException } from '@nestjs/common'
+
 export const primaryColorArray = [
   'PURPLE',
   'ORANGE',
@@ -21,9 +23,9 @@ export class PrimaryColor {
 
   constructor(value: PrimaryColorType, generateByAi: boolean) {
     if (!primaryColorArray.includes(value)) {
-      throw new Error(
+      throw new BadRequestException(
         `Primary color precisa ser uma dessas opções: ${primaryColorArray}`,
-      ) // TODO: colocar depois um erro usando as exceptions do Nest
+      )
     }
 
     this._value = value

@@ -19,6 +19,7 @@ export class VercelAiSdkAiPostGeneratorService
   ): Promise<PostFromAi> {
     const prompt = `
       Você será um redator de blogs profissional e quero que crie um artigo para este blog.
+      Quero que no artigo siga a estrutura de introdução, corpo do texto e conclusão, além disso use heading (do h1 até h4) para dividir as seções.
       Para cada artigo quero que aborde um tema diferente, então toda vez que for gerar um post, use um tema diferente.
 
       ${
@@ -40,7 +41,7 @@ export class VercelAiSdkAiPostGeneratorService
       Descrição: ${blog.description}
       Nome: ${blog.name}
       Quero que o conteúdo do blog seja em formato markdown.
-      Além disso, quero que retorne uma thumbnail, ela será buscada pela api do Unsplash, então me de um bom termo de busca em ingles para buscar a imagem.
+      Além disso, quero que retorne uma thumbnail, ela será buscada pela api do Unsplash, então me de um bom termo de busca em ingles para buscar a imagem. Quero que seja criativo aqui, por que não quero termos repetidos
       Note: Você será meu backend, ou seja, quero que a resposta seja APENAS no formato JSON com a seguinte estrutura, não mande nada mais do que o JSON na sua resposta (nem mesmo uma mensagem antes ou depois do JSON):
       {
         “title”: “Aqui vai o título do artigo”,

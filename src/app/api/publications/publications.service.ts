@@ -43,7 +43,6 @@ export class PublicationsService {
   ): Promise<Publication[]> {
     const alreadyGeneratedPublications: Publication[] = []
 
-    // TODO: verificar se isso aqui funciona (não tenho certeza se o await funciona dentro de um for)
     for (let i = 0; i < this.NUMBER_OF_PUBLICATIONS_TO_GENERATE; i++) {
       const generatedPublication = await this.generateOnePublicationForBlog(
         blog,
